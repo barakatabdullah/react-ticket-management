@@ -1,5 +1,5 @@
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
+
+import { Link } from "react-router-dom";
 
 const menuItems = [
     {
@@ -9,26 +9,23 @@ const menuItems = [
     },
     {
       label: "Tickets",
-      icon: "i-tabler-car",
+      icon: "i-tabler-ticket",
       page: "/tickets",
     },
 
   ];
 
 export default function NavMenu() {
-    const navigate = useNavigate();
+
     return (
-        <div className="relative flex flex-col items-center justify-center gap-4 w-40 h-full">
+        <div className="flex flex-col items-start gap-4 w-full h-full p4">
         {menuItems.map((item) => {
           return (
-            <div key={item.label}>
-              <Button
-                className="w-16 h-16 bg-#f5f8facc text-gray-400 text-5 hover:text-#4f46e5"
-                text
-                icon={item.icon}
-                onClick={() => navigate(item.page)}
-                tooltip={item.label}
-              />
+            <div className="flex items-center gap-4 w-full px-4 py-2.5 rounded-2 group hover:bg-#3f425459"  key={item.label}>
+              <i className={`${item.icon} text-#9a9cae text-5 group-hover:text-white`}></i>
+              <Link className="text-#9a9cae font-bold group-hover:text-white" to={item.page}>
+              {item.label}
+              </Link>
             </div>
           );
         })}

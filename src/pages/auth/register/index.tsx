@@ -10,17 +10,19 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import api from "../../../config/axios";
-import { setUserId, setUserName, setUserToken } from "../../../stores/user";
+import { setUserId, setUserName } from "../../../stores/user";
 
 export default function Register() {
   const methods = useForm();
   const navigate = useNavigate()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
     mutateAsync(data);
   };
 
   const { mutateAsync } = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: async (data: any) => {
       const res = await api.post("/register", {
         ...data

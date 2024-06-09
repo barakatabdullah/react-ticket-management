@@ -10,7 +10,6 @@ export default function Layout() {
   const toast = useRef<Toast>(null)
   return (
     <AuthGuard>
-      <div className="absolute h-68 w-screen top-0  bg-#18125c -z-2" />
       <Toast ref={toast} position="bottom-right" />
       <div className=" min-h-screen flex max-lg:flex-col ">
         <div>

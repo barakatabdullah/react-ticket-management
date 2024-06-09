@@ -1,17 +1,15 @@
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { Boxes } from "../../../global-env";
-import { useUserStore } from "../../../stores/user";
+import { useNavigate } from "react-router-dom";
+
 import { Tag } from "primereact/tag";
 
 // @ts-expect-error: fix later
 export function ItemTemplate(ticket) {
   const navigate = useNavigate();
-  const userStore = useUserStore();
-  const { toast } = useOutletContext<Boxes>();
 
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function cardFooter(ticket: any) {
     return (
       <div className="flex items-center justify-between ">
