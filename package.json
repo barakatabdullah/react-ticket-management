@@ -1,0 +1,48 @@
+{
+  "name": "react-mosnad",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@fontsource-variable/red-hat-display": "^5.0.21",
+    "@generouted/react-router": "^1.19.5",
+    "@tanstack/react-query": "^5.40.1",
+    "@unocss/reset": "^0.60.3",
+    "axios": "^1.7.2",
+    "firebase": "^10.12.2",
+    "fs": "0.0.1-security",
+    "primereact": "^10.6.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.5",
+    "react-router-dom": "^6.23.1",
+    "sweetalert2": "^11.11.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@iconify-json/tabler": "^1.1.113",
+    "@tanstack/eslint-plugin-query": "^5.35.6",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@unocss/preset-icons": "^0.60.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "husky": "^9.0.11",
+    "sass": "^1.77.4",
+    "typescript": "^5.2.2",
+    "unocss": "^0.60.3",
+    "vite": "^5.2.0",
+    "vite-plugin-node-polyfills": "^0.22.0"
+  }
+}
