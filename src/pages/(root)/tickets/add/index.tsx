@@ -39,6 +39,7 @@ export default function AddCar() {
   };
 
   const { mutateAsync } = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: async (data: any) => {
       const res = await api.post("tickets", {
         ...data,

@@ -17,7 +17,7 @@ export function ItemTemplate(ticket) {
   const navigate = useNavigate();
 
 
- function onDelete(id){
+ function onDelete(id:number){
    confirmDialog({
     message: 'Do you want to delete this record?',
     header: 'Delete Confirmation',
@@ -40,7 +40,7 @@ export function ItemTemplate(ticket) {
 
 
   const { mutate } = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id:number) => {
       const res = await api.delete("/tickets/"+id);
       return res;
     },

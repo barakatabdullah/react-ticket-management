@@ -5,16 +5,18 @@ import { ItemTemplate } from "../_components/ItemsTemplate";
 import TicketsTableHeder from "./_components/TicketsTableHeder";
 import Header from "../../../components/Header";
 import { useState } from "react";
-import { Car } from "../../../global-env";
 
-export default function Cars() {
+export default function Tickets() {
   const [filter,setFilter]=useState('')
 
   const { data, isLoading } = useQuery({
     placeholderData: keepPreviousData,
     queryKey: ["tickets"],
     queryFn: getTikets,
-    select: (data) => data?.filter((ticket)=>Object.values(ticket)
+
+    //fix typeerror later
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    select: (data) => data?.filter((ticket:any)=>Object.values(ticket)
     .join('')
     .toLowerCase()
     .includes(filter.toLowerCase())),

@@ -13,7 +13,7 @@ export default function Home() {
     placeholderData: keepPreviousData,
     queryKey: ["tickets"],
     queryFn: getTikets,
-    select: (data) => data?.slice(0, 4),
+    select: (data) => data?.slice(0, 8),
   });
 
   console.log(data)
@@ -21,10 +21,6 @@ export default function Home() {
   return (
     <div className=" flex flex-col gap-8 p-12">
       <Header title="Welcome to Tickets Manager" />
-
-      <div>
-        hello
-      </div>
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
@@ -51,7 +47,6 @@ export default function Home() {
             },
           }}
           itemTemplate={ItemTemplate}
-          rows={4}
         />
       </div>
     </div>

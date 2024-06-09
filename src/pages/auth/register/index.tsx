@@ -7,12 +7,15 @@ import { useForm, Controller } from "react-hook-form";
 
 
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import api from "../../../config/axios";
 import { setUserId, setUserName } from "../../../stores/user";
+import { Boxes } from "../../../global-env";
 
 export default function Register() {
+  const {toast} = useOutletContext<Boxes>()
+
   const methods = useForm({
     mode: "all"
   });
