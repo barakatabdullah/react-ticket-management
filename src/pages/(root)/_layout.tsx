@@ -5,12 +5,14 @@ import Footer from "../../components/Footer";
 import { Toast, ToastMessage } from "primereact/toast";
 import { useRef } from "react";
 import AuthGuard from "../auth/_guard/AuthGuard";
+import { ConfirmDialog } from "primereact/confirmdialog";
 
 export default function Layout() {
   const toast = useRef<Toast>(null)
   return (
     <AuthGuard>
-      <Toast ref={toast} position="bottom-right" />
+      <ConfirmDialog  />
+      <Toast ref={toast} />
       <div className=" min-h-screen flex max-lg:flex-col ">
         <div>
           <NavBar />

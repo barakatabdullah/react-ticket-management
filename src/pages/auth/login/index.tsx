@@ -85,6 +85,15 @@ export default function Login() {
 
           <Button label="Login" type="submit" />
         </form>
+        
+        <div className="flex justify-center w-full pt-4">
+            <Button
+            label="or register new account"
+            link
+            onClick={()=>navigate('/auth/register')}
+
+            />
+        </div>
       </Card>
     </div>
   );

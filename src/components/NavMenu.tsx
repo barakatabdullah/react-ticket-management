@@ -21,9 +21,9 @@ export default function NavMenu() {
         <div className="flex flex-col items-start gap-4 w-full h-full p4">
         {menuItems.map((item) => {
           return (
-            <div className="flex items-center gap-4 w-full px-4 py-2.5 rounded-2 group hover:bg-#3f425459"  key={item.label}>
+            <div className="w-full"   key={item.label}>
+              <Link className="text-#9a9cae font-bold hover:text-white flex items-center gap-4 w-full px-4 py-2.5 rounded-2 group hover:bg-#3f425459" to={item.page}>
               <i className={`${item.icon} text-#9a9cae text-5 group-hover:text-white`}></i>
-              <Link className="text-#9a9cae font-bold group-hover:text-white" to={item.page}>
               {item.label}
               </Link>
             </div>

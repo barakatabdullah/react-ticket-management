@@ -13,7 +13,9 @@ import api from "../../../config/axios";
 import { setUserId, setUserName } from "../../../stores/user";
 
 export default function Register() {
-  const methods = useForm();
+  const methods = useForm({
+    mode: "all"
+  });
   const navigate = useNavigate()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,16 +32,21 @@ export default function Register() {
       return res;
     },
     onSuccess: (res) => {
-      console.log(res)
       setUserId(res.data.user.id)
       setUserName(res.data.user.name)
       localStorage.setItem("userId", res.data.user.id);
       localStorage.setItem("name", res.data.user.name);
+      toast({
+        severity: "success",
+        summary: "Success",
+        detail: "Registered successfully",
+        life: 3000,
+      });
       navigate("/auth/login");
     },
   });
 
-  
+
   return (
     <div className="w-screen h-screen flex items-center justify-center">
       <Card className="w-2/8">
@@ -56,8 +63,11 @@ export default function Register() {
               control={methods.control}
               rules={{
                 required: true,
+                minLength: 3
               }}
-              render={({ field }) => <InputText {...field} id="name" />}
+              render={({ field, fieldState }) => <><InputText {...field} id="name" /><span className="text-red">
+                {fieldState.error?.message}
+              </span></>}
               name="name"
             />
           </div>
@@ -68,9 +78,15 @@ export default function Register() {
             <Controller
               control={methods.control}
               rules={{
-                required: true,
+                required: 'Email is required',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Invalid email address',
+                },
               }}
-              render={({ field }) => <InputText {...field} id="email" />}
+              render={({ field, fieldState }) => <><InputText {...field} id="email" /><span className="text-red">
+                {fieldState.error?.message}
+              </span></>}
               name="email"
             />
           </div>
@@ -81,14 +97,15 @@ export default function Register() {
               rules={{
                 required: true,
               }}
-              render={({ field }) => (
-                <Password
+              render={({ field, fieldState }) => (
+                <><Password
                   {...field}
                   pt={{
                     input: { className: "w-full" },
                   }}
-                  inputId="password"
-                />
+                  inputId="password" /><span className="text-red">
+                    {fieldState.error?.message}
+                  </span></>
               )}
               name="password"
             />
@@ -99,28 +116,31 @@ export default function Register() {
               control={methods.control}
               rules={{
                 required: true,
+                validate: (value) => value === methods.getValues("password") || "Passwords do not match",
               }}
-              render={({ field }) => (
-                <Password
+              render={({ field, fieldState }) => (
+                <><Password
                   {...field}
+                  feedback={false}
                   pt={{
                     input: { className: "w-full" },
                   }}
-                  inputId="password_confirmation"
-                />
+                  inputId="password_confirmation" /><span className="text-red">
+                    {fieldState.error?.message}
+                  </span></>
               )}
               name="password_confirmation"
             />
           </div>
           <Button label="Register" type="submit" />
         </form>
-        <div className="flex justify-center w-full">
-            <Button
+        <div className="flex justify-center w-full pt-4">
+          <Button
             label="or Login with your account"
             link
-            onClick={()=>navigate('/auth/login')}
+            onClick={() => navigate('/auth/login')}
 
-            />
+          />
         </div>
       </Card>
     </div>

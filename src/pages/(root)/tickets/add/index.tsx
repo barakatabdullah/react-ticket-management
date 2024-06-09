@@ -11,6 +11,8 @@ import { InputSwitch } from "primereact/inputswitch";
 import { useMutation } from "@tanstack/react-query";
 import api from "../../../../config/axios";
 import { useUserStore } from "../../../../stores/user";
+import { queryClient } from "../../../../config/queryClient";
+import { InputNumber } from "primereact/inputnumber";
 
 export default function AddCar() {
   const userStore = useUserStore();
@@ -22,7 +24,7 @@ export default function AddCar() {
       title: "",
       device_name: "",
       model: "",
-      serialNumber: "",
+      serialNumber: null,
       description: "",
       created_by: 1,
       status: true,
@@ -53,6 +55,7 @@ export default function AddCar() {
         detail: "Ticket added successfully",
         life: 3000,
       });
+      queryClient.invalidateQueries({ queryKey: ["tickets"] });
     },
   });
 
@@ -63,21 +66,6 @@ export default function AddCar() {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-8 gap-8 max-lg:grid-cols-1"
       >
-        {/* <Card className="aspect-square border shadow-none col-span-2 max-lg:col-span-1 relative">
-          <div className="flex flex-col  w-full gap-2 h-full absolute top-0 left-0 p-4">
-            <label className="flex flex-col text-center gap-4 text-#4338ca  cursor-pointer items-center justify-center w-full h-full  border rounded-2" htmlFor="thumbnail">
-              <i className="i-tabler-cloud-upload text-10"></i>
-              <p className="font-bold text-6">Upload Thumbnail</p>
-            </label>
-            <input
-            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-              type="file"
-              id="thumbnail"
-              accept="image/png, image/jpeg"
-              {...register("thumbnail")}
-            />
-          </div>
-        </Card> */}
 
         <div className="col-span-6 flex flex-col gap-6 max-lg:col-span-1">
           <Card className="w-full shadow-none border">
@@ -176,11 +164,12 @@ export default function AddCar() {
                   }}
                   render={({ field, fieldState }) => (
                     <>
-                      <InputText
+                      <InputNumber
                         className={classNames({
                           "p-invalid": fieldState.error,
                         })}
-                        {...field}
+                        
+                        ref={field.ref} value={field.value} onBlur={field.onBlur} onValueChange={(e) => field.onChange(e)}
                         id="serialNumber"
                       />
 
@@ -248,33 +237,13 @@ export default function AddCar() {
               </div>
             </div>
           </Card>
-          {/* <Card className="w-full shadow-none borde relative h-full min-h-80">
-            <div className="flex flex-col gap-2 absolute top-0 left-0 p-4 h-full w-full">
-            <label className="flex flex-col gap-4 p-6 text-#4338ca  cursor-pointer items-center justify-center w-full h-full  border rounded-2" htmlFor="thumbnail">
-              <i className="i-tabler-cloud-upload text-10"></i>
-             <div className="flex flex-col gap-1 justify-center text-center">
-             <p className="font-bold text-6">Upload More Images</p>
-             <p className="text-gray">Maximum of 5 Images</p>
-             </div>
-            </label>
 
-              <input
-                {...register("images")}
-                multiple
-                type="file"
-                accept="image/*"
-                id="images"
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-foreground file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-
-              />
-
-            </div>
-          </Card> */}
           <div className="flex gap-4 justify-end items-center max-lg:flex-col-reverse max-lg:gap-2 w-full">
             <Button
               className="max-lg:w-full"
               outlined
               label="Cancel"
+              type="button"
               onClick={() => navigate(-1)}
             />
             <Button className="max-lg:w-full" label="Submit" type="submit" />
