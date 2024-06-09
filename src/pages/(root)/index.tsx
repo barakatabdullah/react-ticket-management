@@ -1,25 +1,28 @@
-import { getCars } from "./_utils";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { ItemTemplate } from "./_components/ItemsTemplate";
+// import { ItemTemplate } from "./_components/ItemsTemplate";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { Card } from "primereact/card";
 import SocialWedgits from "./_components/SocialWedgits";
 import { DataView } from "primereact/dataview";
 import Header from "../../components/Header";
+import { getTikets } from "./_utils";
+import { ItemTemplate } from "./_components/ItemsTemplate";
 
 export default function Home() {
   const navigate = useNavigate();
   const { data, isLoading } = useQuery({
     placeholderData: keepPreviousData,
-    queryKey: ["cars"],
-    queryFn: getCars,
-    select: (data) => data?.cars?.slice(0, 4),
+    queryKey: ["tickets"],
+    queryFn: getTikets,
+    select: (data) => data?.slice(0, 4),
   });
+
+  console.log(data)
 
   return (
     <div className=" flex flex-col gap-8 p-12">
-      <Header title="Welcome to Acara Store" />
+      <Header title="Welcome to Tickets Manager" />
 
       <div className="grid grid-cols-3 max-lg:grid-cols-1 gap-4">
         <div className="col-span-1">
@@ -66,11 +69,11 @@ export default function Home() {
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <h2 className="text-7 font-bold">Cars</h2>
+          <h2 className="text-7 font-bold">Top Tickets</h2>
           <Button
             text
-            label="Browse cars"
-            onClick={() => navigate("/cars")}
+            label="Browse Tickets"
+            onClick={() => navigate("/tickets")}
             icon="i-tabler-arrow-right"
             iconPos="right"
           />

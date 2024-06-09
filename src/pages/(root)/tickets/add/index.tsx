@@ -1,90 +1,69 @@
-
-import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputText";
 import { useForm, Controller } from "react-hook-form";
 import { classNames } from "primereact/utils";
-import { InputNumber } from "primereact/inputnumber";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import Header from "../../../../components/Header";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { getCompanies } from "../../_utils";
+// import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Boxes } from "../../../../global-env";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../../../config/firebase";
+import { InputSwitch } from "primereact/inputswitch";
+import { useMutation } from "@tanstack/react-query";
+import api from "../../../../config/axios";
+import { useUserStore } from "../../../../stores/user";
 
 export default function AddCar() {
+  const userStore = useUserStore();
   const { toast } = useOutletContext<Boxes>();
   const navigate = useNavigate();
 
-  const { handleSubmit, control, register } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
-      thumbnail: null,
-      company: null,
       title: "",
-      price: 0,
+      device_name: "",
+      model: "",
+      serialNumber: "",
       description: "",
-      images: null
+      created_by: 1,
+      status: true,
     },
     mode: "all",
   });
 
-  const { data } = useQuery({
-    placeholderData: keepPreviousData,
-    queryKey: ["companies"],
-    queryFn: getCompanies,
-    select: (data) => data?.companies,
+  //fix (any) type issue later
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (data: any) => {
+    mutateAsync(data);
+  };
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await api.post("tickets", {
+        ...data,
+        created_by: userStore.userId,
+        status: data.status ? "open" : "closed",
+      });
+      return res;
+    },
+    onSuccess: (res) => {
+      console.log(res);
+      toast({
+        severity: "success",
+        summary: "Success",
+        detail: "Ticket added successfully",
+        life: 3000,
+      });
+    },
   });
-
-  // @ts-expect-error: fix later
-  async function onSubmit(data) {
-    const thumbnailRef = ref(storage, `cars/${data.thumbnail[0].name}`);
-
-    await uploadBytes(thumbnailRef, data.thumbnail[0]);
-    // const thumbnailUrl = await getDownloadURL(thumbnailRef);
-    
-    const images = []
-    if (data.images?.length > 0) {
-      if (data.images?.length > 5) {
-        toast({
-          severity: "warn",
-          summary: "Warning",
-          detail: "The maximum number of images is 5",
-          life: 3000,
-        });
-        return
-      }
-
-      
-
-    for (let i = 0; i < data.images.length; i++) {
-      const imageRef = ref(storage, `cars/images/${data.images[i].name}`);
-      await uploadBytes(imageRef, data.images[i]);
-      const imageUrl = await getDownloadURL(imageRef);
-
-      images.push(imageUrl);
-    }
-
-    }
-
-    toast({
-      severity: "success",
-      summary: "Success",
-      detail: "Car added successfully",
-      life: 3000,
-    });
-  }
-
 
   return (
     <div className="p12">
-      <Header title="Add Car" />
+      <Header title="Add Ticket" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-8 gap-8 max-lg:grid-cols-1"
       >
-        <Card className="aspect-square border shadow-none col-span-2 max-lg:col-span-1 relative">
+        {/* <Card className="aspect-square border shadow-none col-span-2 max-lg:col-span-1 relative">
           <div className="flex flex-col  w-full gap-2 h-full absolute top-0 left-0 p-4">
             <label className="flex flex-col text-center gap-4 text-#4338ca  cursor-pointer items-center justify-center w-full h-full  border rounded-2" htmlFor="thumbnail">
               <i className="i-tabler-cloud-upload text-10"></i>
@@ -98,7 +77,7 @@ export default function AddCar() {
               {...register("thumbnail")}
             />
           </div>
-        </Card>
+        </Card> */}
 
         <div className="col-span-6 flex flex-col gap-6 max-lg:col-span-1">
           <Card className="w-full shadow-none border">
@@ -131,6 +110,90 @@ export default function AddCar() {
                 />
               </div>
               <div className="flex flex-col gap-2 ">
+                <label className="font-bold" htmlFor="device_name">
+                  Device Name
+                </label>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: "Device Name is required",
+                  }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <InputText
+                        className={classNames({
+                          "p-invalid": fieldState.error,
+                        })}
+                        {...field}
+                        id="device_name"
+                      />
+
+                      <span className="text-red">
+                        {fieldState.error?.message}
+                      </span>
+                    </>
+                  )}
+                  name="device_name"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 ">
+                <label className="font-bold" htmlFor="model">
+                  Model
+                </label>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: "Model is required",
+                  }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <InputText
+                        className={classNames({
+                          "p-invalid": fieldState.error,
+                        })}
+                        {...field}
+                        id="model"
+                      />
+
+                      <span className="text-red">
+                        {fieldState.error?.message}
+                      </span>
+                    </>
+                  )}
+                  name="model"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 ">
+                <label className="font-bold" htmlFor="SerialNumber">
+                  Serial Number
+                </label>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: "Serial Number is required",
+                  }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <InputText
+                        className={classNames({
+                          "p-invalid": fieldState.error,
+                        })}
+                        {...field}
+                        id="serialNumber"
+                      />
+
+                      <span className="text-red">
+                        {fieldState.error?.message}
+                      </span>
+                    </>
+                  )}
+                  name="serialNumber"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 ">
                 <label className="font-bold" htmlFor="description">
                   Description
                 </label>
@@ -157,63 +220,35 @@ export default function AddCar() {
                   name="description"
                 />
               </div>
+
               <div className="flex flex-col gap-2 ">
-                <label className="font-bold" htmlFor="category">
-                  Company
+                <label className="font-bold" htmlFor="status">
+                  status
                 </label>
                 <Controller
                   control={control}
-                  rules={{
-                    required: "Company is required",
-                  }}
                   render={({ field, fieldState }) => (
                     <>
-                      <Dropdown
-                        options={data}
-                        optionLabel="name"
-                        optionValue="name"
-                        {...field}
-                        id="company"
-                      />
-                      <span className="text-red">
-                        {fieldState.error?.message}
-                      </span>
-                    </>
-                  )}
-                  name="company"
-                />
-              </div>
-              <div className="flex flex-col gap-2 ">
-                <label className="font-bold" htmlFor="price">
-                  Price
-                </label>
-                <Controller
-                  control={control}
-                  rules={{
-                    required: "Price is required",
-                    min: 1,
-                    max: 10000,
-                  }}
-                  render={({ fieldState, field }) => (
-                    <>
-                      <InputNumber
-                        ref={field.ref} value={field.value} onBlur={field.onBlur} onValueChange={(e) => field.onChange(e)}
+                      <InputSwitch
                         className={classNames({
                           "p-invalid": fieldState.error,
                         })}
-                        id="price"
+                        checked={field.value}
+                        onChange={field.onChange}
+                        id="status"
                       />
+
                       <span className="text-red">
                         {fieldState.error?.message}
                       </span>
                     </>
                   )}
-                  name="price"
+                  name="status"
                 />
               </div>
             </div>
           </Card>
-          <Card className="w-full shadow-none borde relative h-full min-h-80">
+          {/* <Card className="w-full shadow-none borde relative h-full min-h-80">
             <div className="flex flex-col gap-2 absolute top-0 left-0 p-4 h-full w-full">
             <label className="flex flex-col gap-4 p-6 text-#4338ca  cursor-pointer items-center justify-center w-full h-full  border rounded-2" htmlFor="thumbnail">
               <i className="i-tabler-cloud-upload text-10"></i>
@@ -234,24 +269,18 @@ export default function AddCar() {
               />
 
             </div>
-          </Card>
+          </Card> */}
           <div className="flex gap-4 justify-end items-center max-lg:flex-col-reverse max-lg:gap-2 w-full">
-          
             <Button
-             className="max-lg:w-full"
-            outlined
+              className="max-lg:w-full"
+              outlined
               label="Cancel"
               onClick={() => navigate(-1)}
             />
             <Button className="max-lg:w-full" label="Submit" type="submit" />
-            
           </div>
-
         </div>
-
       </form>
-
     </div>
   );
 }
-

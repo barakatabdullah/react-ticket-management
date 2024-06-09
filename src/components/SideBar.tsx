@@ -9,7 +9,7 @@ export default function SideBar() {
       <div className=" bg-white z-100 flex flex-col items-center justify-center h-screen fixed left-0 top-0 bottom-0 border">
         <div className="pt-10 w-16">
           <Link to="/">
-            <img src="/logo.svg" alt="Acara" />
+            <img src="/logo.png" alt="Acara" />
           </Link>
         </div>
         <NavMenu/>

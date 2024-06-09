@@ -13,7 +13,7 @@ export default function NavBar() {
         <div className="container mx-auto flex items-center justify-between max-sm:px-6">
           <div className="w-12">
             <Link to="/">
-              <img src="/logo.svg" alt="Acara" />
+              <img src="/logo.png" alt="Acara" />
             </Link>
           </div>
           <div className="h-12 flex gap-4">

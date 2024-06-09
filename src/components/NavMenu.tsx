@@ -8,26 +8,11 @@ const menuItems = [
       page: "/",
     },
     {
-      label: "Cars",
+      label: "Tickets",
       icon: "i-tabler-car",
-      page: "/cars",
+      page: "/tickets",
     },
-    // {
-    //   label: "Companies",
-    //   icon: "i-tabler-building",
-    //   page: "/",
-    // },
 
-    {
-      label: "Bookmarks",
-      icon: "i-tabler-bookmark",
-      page: "/bookmarks",
-    },
-    {
-      label: "Chat",
-      icon: "i-tabler-message",
-      page: "/",
-    },
   ];
 
 export default function NavMenu() {
