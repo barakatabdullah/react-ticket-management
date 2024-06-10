@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import api from "../../../../config/axios";
 import { useUserStore } from "../../../../stores/user";
 import { queryClient } from "../../../../config/queryClient";
-import { InputNumber } from "primereact/inputnumber";
+
 
 export default function AddCar() {
   const userStore = useUserStore();
@@ -24,7 +24,7 @@ export default function AddCar() {
       title: "",
       device_name: "",
       model: "",
-      serialNumber: null,
+      serialNumber: "",
       description: "",
       created_by: 1,
       status: true,
@@ -165,12 +165,12 @@ export default function AddCar() {
                   }}
                   render={({ field, fieldState }) => (
                     <>
-                      <InputNumber
+                      <InputText
                         className={classNames({
                           "p-invalid": fieldState.error,
                         })}
                         
-                        ref={field.ref} value={field.value} onBlur={field.onBlur} onValueChange={(e) => field.onChange(e)}
+                        {...field}
                         id="serialNumber"
                       />
 
